@@ -405,7 +405,8 @@ namespace SteamKit2.Internal
         {
             if ( protocol.HasFlagsFast( ProtocolTypes.WebSocket ) )
             {
-                return new WebSocketConnection( this );
+                throw new Exception( "Unproxified websocket connection!" );
+                //return new WebSocketConnection( this );
             }
             else if ( protocol.HasFlagsFast( ProtocolTypes.Tcp ) )
             {
@@ -413,7 +414,8 @@ namespace SteamKit2.Internal
             }
             else if ( protocol.HasFlagsFast( ProtocolTypes.Udp ) )
             {
-                return new EnvelopeEncryptedConnection( new UdpConnection( this ), Universe, this, DebugNetworkListener );
+                throw new Exception( "Unproxified udp connection!" );
+                //return new EnvelopeEncryptedConnection( new UdpConnection( this ), Universe, this, DebugNetworkListener );
             }
 
             throw new ArgumentOutOfRangeException( nameof( protocol ), protocol, "Protocol bitmask has no supported protocols set." );
