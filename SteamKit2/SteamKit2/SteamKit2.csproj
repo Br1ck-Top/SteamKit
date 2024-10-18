@@ -57,4 +57,10 @@
     <PackageReference Include="System.IO.Hashing" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="ProxySocket">
+      <HintPath>..\..\ProxySocket.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

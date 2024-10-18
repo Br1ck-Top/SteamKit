@@ -13,7 +13,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Org.Mentalis.Network.ProxySocket;
 using SteamKit2.Discovery;
+using SteamKit2.Networking.Proxification;
 
 namespace SteamKit2.Internal
 {
@@ -22,6 +24,9 @@ namespace SteamKit2.Internal
     /// </summary>
     public abstract class CMClient : ILogContext
     {
+
+        internal Proxy? Proxy { get; set; }
+
         /// <summary>
         /// The configuration for this client.
         /// </summary>
@@ -405,12 +410,13 @@ namespace SteamKit2.Internal
         {
             if ( protocol.HasFlagsFast( ProtocolTypes.WebSocket ) )
             {
-                throw new Exception( "Unproxified websocket connection!" );
-                //return new WebSocketConnection( this );
+                //throw new Exception( "Unproxified websocket connection!" );
+                return new WebSocketProxyConnection( this, Proxy );
             }
             else if ( protocol.HasFlagsFast( ProtocolTypes.Tcp ) )
             {
-                return new EnvelopeEncryptedConnection( new TcpConnection( this ), Universe, this, DebugNetworkListener );
+                //throw new Exception( "Unproxified tcp connection!" );
+                return new EnvelopeEncryptedConnection( new TcpProxyConnection( this, Proxy ), Universe, this, DebugNetworkListener );
             }
             else if ( protocol.HasFlagsFast( ProtocolTypes.Udp ) )
             {

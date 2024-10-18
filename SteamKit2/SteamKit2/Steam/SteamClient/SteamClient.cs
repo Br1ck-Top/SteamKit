@@ -11,9 +11,11 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Org.Mentalis.Network.ProxySocket;
 using ProtoBuf;
 using SteamKit2.Authentication;
 using SteamKit2.Internal;
+using SteamKit2.Networking.Proxification;
 
 namespace SteamKit2
 {
@@ -23,6 +25,7 @@ namespace SteamKit2
     /// </summary>
     public sealed partial class SteamClient : CMClient
     {
+        
         List<ClientMsgHandler> handlers;
 
         long currentJobId = 0;
@@ -42,9 +45,16 @@ namespace SteamKit2
         /// <summary>
         /// Initializes a new instance of the <see cref="SteamClient"/> class with the default configuration.
         /// </summary>
+        public SteamClient( Proxy proxy )
+            : this( SteamConfiguration.CreateDefault() )
+        {
+            Proxy = proxy;
+        }
+
         public SteamClient()
             : this( SteamConfiguration.CreateDefault() )
         {
+            if ( Proxy == null ) throw new ArgumentNullException( "Proxy is null" );
         }
 
         /// <summary>
